@@ -341,6 +341,83 @@ class Smartphone:
         print(f"변경 후 가격 : {self._price}")
 Smartphone1 = Smartphone("Iphone",1000)
 Smartphone1.price = 10000
+Smartphone1.price = -1000
+
+# 추상 메소드 
+# class를 만들었다면 class에서 정의된 메소드를 그대로 사용하지 않을 수 있음 
+# 상속받고, 어떤 메소드는 추가하고 어떤 메소드는 오버라이드할 수있음 
+# 통일된 Class 체계를 구축하며 확장 기능을 가능하게 만드는 것이 Class
+
+# 이런 개념을 토대로, Class를 만들떄 반드시 구현해야 할 메소드를 명시할 수 있음 
+# 아래 코드는 Smartphone 에서 func1 함수를 구현하지 않아 오류가 발생함
+
+class Smartphone:
+    def func1(cls):
+        raise NotImplementedError()
+
+class Iphone(Smartphone):
+
+# iphone = Iphone()
+# iphone.func1() # Error 발생   
+
+# 조금 더 Strict하고 세련된 방법은 @abc.abstractmethod 를 사용하는 방법
+# abc는 absstract base class 의 약자 
+# Class의 인자로 metaclass=abc.ABCMeta를 지정하고,
+# Class에 데코레이텉로 abc.abstractmethod 를 사용하면, class가 호출되는 순간구현해야 하는 메소드가 구현되있는지를 확인함 
+# 참고 : metaclass는 단순히 클래스를 만들 떄 사용됨 클래스의 클래스 
+# 바로 에러가 발생하기 떄문에 인슨턴스화시키지 않고, 푸상화에 이점이 존재 
+
+# import abc
+
+# class Smartphone(metaclass=abc.ABCMeta):
+#     @abc.abstractclassmethod
+#     def func1(cls):
+#         raise NotImplementedError()
+    
+# class Iphone(Smartphone):
+#     def func2(self):
+#         pass
+# iphone = iphone() # Error 발생 
+
+# slots 
+
+# 파이썬의 클래스들은 인스턴스 속성을 저장함 
+# 파이썬에서 객체의 인스ㅓㄴ스 속성을 저장하기 위해 dictionary를 사용함 
+# 이런 방식은 속성을추가하거나 삭제할 때 유용함 
+# obj.__dict__으로 접근하는 경우 
+# 그러나 dictionary 자료 구조는메모리를 많이 낭비함
+# 파이썬 객체 생성시 모든 솟ㄱ성을 메모리에 할당하려고 함 
+# 메모리 할당량이 많으면 많은 RAM을 낭비하게 됨 
+
+# 이런 문제를 해결하기 위해 __slots__ 를 사용해 특정 속성에만 메모리를 할당하도록 함 
+# ipython memory usage 를 사용하면 __slots__를 사용해서 메모리 사용량이 얼마나 개선되는지 확인할 수 있음 
+
+# __slots__ 없이 짠 코드 
+
+class smartphone:
+    def __init__(self,brand,price):
+        self._brand = brand
+        self._price = price
+        self.set_up()
+
+    # 코드 생략 
+    # set_up은 init시 실행하는 함수 
+
+# __slots__를 사용해 짠 코드 
+
+class Smartphone:
+    __slots__ = ['_brand','_price']
+
+    def __init__(self,brand,price) :
+        self._brand = brand
+        self._price = price
+        self.set_up()
+
+    # 코드 생략 
+    # set_up은 init시 실행하는 함수 
+
+
+# 결론 : CLass 란  객페를 만들어내기 위한 츨
 
 
 
